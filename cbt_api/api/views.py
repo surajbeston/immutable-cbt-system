@@ -9,6 +9,10 @@ import hashlib
 import json
 
 
+def simple_get(request):
+    return HttpResponse('sdjhfkjh')
+
+
 def create_examiner(request):
     form = ExaminerForm()
     if request.method == "GET":
@@ -26,7 +30,7 @@ def create_examiner(request):
     return render(request, "api/form.html", {"form": form, "error": "Either CSRF token is missing or email is already registered."})
 
 def save_score(request):
-    data = json.loads(request.body)
+    data = request.POST
     try:
         user = Examiner.objects.get(exam_id = data["id"])
     except:
@@ -34,19 +38,34 @@ def save_score(request):
     if user.exam_taken == False:
         user.exam_taken = True
         user.save()
-        obj = Examiner_score(user = user, score = data["score"])
+        examiners = Examiner_score.objects.all()
+        for last_user in examiners:
+            pass
+        toHash = str(data["score"]) + last_user.hashed
+        hash = hashlib.md5(toHash.encode())
+        obj = Examiner_score(user = user, score = data["score"], hashed = hash)
         obj.save()
-        return JsonResponse({"detail": "saved"})
+        return JsonResponse({"detail": "saved", "hash": str(hash)})
     else:
-        return JsonResponse({"detail": "exam already taken."})
+        return JsonResponse({"detail" : "exam already taken."})
+
+def get_user(request):
+    data = request.POST
+    try:
+        user = Examiner.objects.get(exam_id = data["id"])
+        return JsonResponse({"detail": "ok", "id": user.exam_id, "name": user.name, "exam_ready": True})
+    except:
+        return JsonResponse({"detail": "id invalid"})
+
 
 def rank_examiners(request):
-    data = json.loads(request.body)
-    ranked_objs = Examiner_score.objects.order_by("score")
+    data = request.POST
+    print (request.body)
+    ranked_objs = Examiner_score.objects.order_by("datetime_created")
     for  score_obj in ranked_objs:
-        if score_obj.user.exam_id == data["id"]:
+        if score_obj.user.exam_id == data["user_id"]:
             rank = get_rank(ranked_objs, score_obj)
-            return JsonResponse({"rank": rank, "name": score_obj.user.name})
+            return JsonResponse({"rank": rank, 'users': users,"name": score_obj.user.name})
     return JsonResponse({"detail": "invalid id"})
 
 

@@ -14,6 +14,7 @@ class Examiner_score(models.Model):
     user = models.ForeignKey(Examiner, on_delete = models.CASCADE)
     score = models.FloatField()
     datetime_created = models.DateTimeField(auto_now = True)
+    hashed = models.CharField(max_length = 100)
 
     def __str__(self):
         return self.user.name

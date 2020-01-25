@@ -1,0 +1,81 @@
+ 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: http://localhost:8000 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <title>Exam Section</title>
+    <link rel="stylesheet" href="style_home.css">
+</head>
+
+<body>
+    <div class="first-div">
+        <nav>
+
+            <label class="logo">Exam Control</label>
+            <p style= "color: red; font-weight: bold; font-size: 150%; text-align: center;" id = "error"></p>
+            <ul>
+
+                <li><a><span></span><span id ="student_name">name : </span id ="student_name"></a></li>
+                <li><a ><span>Secret id : </span>  <span id = "student_id">student id </span></a></li>
+                <li><a ><span>Ethereum Id : </span><span id = "address">address</span></a></li>
+            </ul>
+        </nav>
+        <div class="sec-div">
+            <h1>Questions:</h1>
+            <form class="form">
+                <section class="check" id = "question1">
+                    <h4>Q1:How many computer languages are in use?</h4>
+                    <input type="radio" name="answer" id = "ans11"> 2000<br>
+                    <input type="radio" name="answer" id= "ans12"> 5000<br>
+                    <input type="radio" name="answer" id = "ans13"> 50<br>
+                    <input type="radio" name="answer" id = "ans14"> 20<br>
+                </section>
+                <section class="check" id = "question2">
+                    <h4>Q2:What does the Internet prefix WWW stand for?</h4>
+                    <input type="radio" name="answers" id = "ans21"> World Wide Web<br>
+                    <input type="radio" name="answers" id = "ans22"> World Wide Weber<br>
+                    <input type="radio" name="answers" id = "ans23"> World Wide Weather<br>
+                    <input type="radio" name="answers" id = "ans24"> Western Washington World<br>
+                </section>
+                <section class="check" id = "question3">
+                    <h4>Q3:A network designed to allow communication within an organization is called ? </h4>
+                    <input type="radio" name="but" id = "ans31">Yahoo<br>
+                    <input type="radio" name="but" id = "ans32">Intranet<br>
+                    <input type="radio" name="but" id = "ans33">World Wide Web <br>
+                    <input type="radio" name="but" id = "ans34">Internet<br>
+                </section>
+                <section class="check" id = "question4">
+                    <h4>Q4:Which of these is not computer manufacturer?</h4>
+                    <input type="radio" name="otta" id = "ans41"> Lenovo<br>
+                    <input type="radio" name="otta" id = "ans42"> Toshiba<br>
+                    <input type="radio" name="otta" id = "ans43"> Lada<br>
+                    <input type="radio" name="otta" id = "ans44"> Apple<br>
+                </section>
+                <section class="check" id = "quesiton5">
+                    <h4>Q5:Which of the following is not one of the early "protocols," or ways to use the Internet?</h4>
+                    <input type="radio" name="gtta" id = "ans51"> Gopher<br>
+                    <input type="radio" name="gtta" id = "ans52"> Telnet<br>
+                    <input type="radio" name="gtta" id = "ans53"> FTP<br>
+                    <input type="radio" name="gtta" id = "ans54"> Blogging<br>
+                </section>
+            </form>
+
+        </div>
+        <button onclick = "App.check_answers()">Submit</button>
+
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
+    <script src="app.js"></script>
+    <script type="text/javascript"> App.load_user()</script>
+
+
+
+
+</body>
+
+
+</html>

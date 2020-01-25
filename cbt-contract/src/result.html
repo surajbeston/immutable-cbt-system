@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title> Login Form</title>
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        #body{
+            display: none;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    <h1 id = "head">Result Page: </h1>
+
+    <div id = "body-form"> 
+        <label>User Id: </label><input type = "text" id="input_id"/>
+    </div>
+
+    <div id = "body">
+        <h2>Name: <span id = "name"></span></h2>
+        <h2>User ID: <span id = "user_id"></span></h2>
+        <h2>Score: <span id = "score"></span></h2>
+        <h2>Rank: <span id = "rank"></span></h2>
+        <h2>Hash: <span id = "hash"></span></h2>
+        <div id = "other_results">
+            <div id = "paticular">
+                <h3>Name</h3>
+                <h3>Score</h3>
+                <h3>Hash</h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
+    <script src="app.js"></script>
+    <script type= "text/javascript">App.get_result_and_verify()</script>
+</body>
+    
+</html>

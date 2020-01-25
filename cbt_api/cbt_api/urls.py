@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from api.views import create_examiner,save_score, rank_examiners
+from api.views import create_examiner,save_score, rank_examiners, simple_get, get_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', create_examiner),
     path('submit-score/', save_score),
-    path('rank/', rank_examiners)
+    path('rank/', rank_examiners),
+    path('', simple_get),
+    path('get/', get_user)
 ]
