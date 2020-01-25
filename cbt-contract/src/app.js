@@ -243,20 +243,26 @@ App = {
 
     check_authenticity: async () => {
       var count = await App.cbt.user_count()
-      user_id = window.localStorage.getItem("user_id")
-      score = window.localStorage.getItem("score")
-      for (var i = 0; i < count.toNumber(); i++){
-
-        var test = await App.cbt.tests()
-        if (test.id == user_id){
-          if (test.score.toNumber() == score){
-            alert("Your data is safe!")
+      var user_id = window.localStorage.getItem("user_id")
+      var score = window.localStorage.getItem("score")
+      
+      count = count.toNumber()
+      for (var i = 0; i < count; i++){
+        var tes_t = await App.cbt.tests(i)
+        var admin_id = tes_t[2]
+        console.log(admin_id)
+        if ( admin_id == user_id){
+          console.log(admin_id)
+          var admin_score = tes_t[4].toNumber()
+          if (admin_score == score){
+            alert ("Your data is safe.")
           }
           else{
-            alert("Your data is altered!")
+            alert ("Your data is altered.")
           }
         }
       }
+
     }
     
     }
