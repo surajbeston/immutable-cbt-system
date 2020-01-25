@@ -139,19 +139,24 @@ App = {
         .then(response => response.json())
         .then(jsonData =>  {
           console.log(jsonData)
+          //then send to blockchain
+          if (jsonData["detail"] != "exam already taken."){
+            
+          }
+          
         })
         .catch(err => {
                 console.log(err)
             }
         )
-
-        //then send to blockchain
-
         await App.cbt.createTest(name, id, score)
         console.log("data saved in blockchain")
         data = new FormData()
         data.append('id', id)
         data.append('score', score)
+        
+
+        
 
 
       }
@@ -198,6 +203,8 @@ App = {
       data.append('id', user_id)
       data.append('kdj', 'sdfasdf')
 
+      window.localStorage.setItem("user_id", user_id)
+
       fetch('http://localhost:8000/rank/', {
         method: 'POST',
         body: data
@@ -212,6 +219,7 @@ App = {
             $("#name").html(jsonData["name"])
             $("#user_id").html(user_id)
             $("#score").html(jsonData["score"])
+            window.localStorage.setItem("score", jsonData["score"])
             $("#rank").html(jsonData["rank"])
             $("#hash").html(jsonData["hash"])
             var a = jsonData["users"].length
@@ -231,11 +239,26 @@ App = {
         )
 
         console.log("sdfds")
+    },
 
+    check_authenticity: async () => {
+      var count = await App.cbt.user_count()
+      user_id = window.localStorage.getItem("user_id")
+      score = window.localStorage.getItem("score")
+      for (var i = 0; i < count.toNumber(); i++){
 
-
+        var test = await App.cbt.tests()
+        if (test.id == user_id){
+          if (test.score.toNumber() == score){
+            alert("Your data is safe!")
+          }
+          else{
+            alert("Your data is altered!")
+          }
+        }
+      }
     }
-
+    
     }
 
 

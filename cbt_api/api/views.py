@@ -33,13 +33,13 @@ def create_examiner(request):
         print ("Probably CSRF token is missing!")
     return render(request, "api/form.html", {"form": form, "error": "Either CSRF token is missing or email is already registered."})
 
-def save_score(request):
-    data = request.POST
-    try:
 
-        user = Examiner.objects.get(exam_id = data["id"])
-    except:
-        return JsonResponse({"detail": "invalid id"})
+@api_view(['GET', 'POST'])
+def save_score(request):
+    data = request.data
+    print (request.data)
+    print ("This is damn immutable")
+    user = Examiner.objects.get(exam_id = data["id"])
     if user.exam_taken == False:
         user.exam_taken = True
         user.save()
