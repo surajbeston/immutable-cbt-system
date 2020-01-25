@@ -130,12 +130,8 @@ App = {
       },
 
       send_data: async (id, score, name) =>{
-        await App.cbt.createTest(name, id, score)
-        console.log("data saved in blockchain")
-        data = new FormData()
-        data.append('id', id)
-        data.append('score', score)
 
+        //first send to server
         fetch('http://localhost:8000/submit-score/', {
         method: 'POST',
         body: data
@@ -148,6 +144,15 @@ App = {
                 console.log(err)
             }
         )
+
+        //then send to blockchain
+
+        await App.cbt.createTest(name, id, score)
+        console.log("data saved in blockchain")
+        data = new FormData()
+        data.append('id', id)
+        data.append('score', score)
+
 
       }
 ,     
@@ -184,22 +189,51 @@ App = {
         )
     },
 
-    get_result_and_verify: async () => {
+    get_result_and_verify: () => {
 
-      var user_id = 
+      var user_id = document.getElementById("input_id").value
+      console.log(user_id)
       var data = new FormData()
-      data.append('id', )
+
+      data.append('id', user_id)
+      data.append('kdj', 'sdfasdf')
 
       fetch('http://localhost:8000/rank/', {
         method: 'POST',
         body: data
         })
         .then(response => response.json())
-        .then(jsonData => console.log(jsonData))
+        .then(jsonData => {
+            console.log(jsonData)
+            document.getElementById("body").style.display = "block";
+            document.getElementById("body").style.backgroundColor = "transparent";
+            document.getElementById("body-form").style.display = "none";
+            console.log("done")
+            $("#name").html(jsonData["name"])
+            $("#user_id").html(user_id)
+            $("#score").html(jsonData["score"])
+            $("#rank").html(jsonData["rank"])
+            $("#hash").html(jsonData["hash"])
+            var a = jsonData["users"].length
+          for (var i = 0; i < a; i++ ){
+            console.log($(".particular"))
+            const $holder = $(".particular").clone()
+            console.log("I'm here")
+            $holder.find(".name_other").html(jsonData["names"][i])
+            $holder.find(".score_other").html(jsonData["users"][i]["score"])
+            $holder.find(".hash_other").html(jsonData["users"][i]["hashed"])
+            $("#other_results").append($holder)
+          }
+        })
         .catch(err => {
                 console.log(err)
             }
         )
+
+        console.log("sdfds")
+
+
+
     }
 
     }

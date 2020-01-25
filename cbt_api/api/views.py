@@ -4,9 +4,13 @@ from django.http import HttpResponse, JsonResponse
 from .models import Examiner, Examiner_score
 from .forms import ExaminerForm
 
+from .serializers import ScoreSerializer
+
 from datetime import datetime
 import hashlib
 import json
+
+from rest_framework.decorators import api_view
 
 
 def simple_get(request):
@@ -22,7 +26,7 @@ def create_examiner(request):
         print("valid form")
         hashed_email = hashlib.md5(form.cleaned_data["email"].encode())
         data = form.cleaned_data
-        obj = Examiner(name = data["name"], email = data["email"], exam_id = hashed_email.hexdigest() )
+        obj = Examiner( name = data["name"], email = data["email"], exam_id = hashed_email.hexdigest() )
         obj.save()
         return render(request, "api/registered.html", {"id": hashed_email.hexdigest()})
     else:
@@ -32,6 +36,7 @@ def create_examiner(request):
 def save_score(request):
     data = request.POST
     try:
+
         user = Examiner.objects.get(exam_id = data["id"])
     except:
         return JsonResponse({"detail": "invalid id"})
@@ -43,9 +48,9 @@ def save_score(request):
             pass
         toHash = str(data["score"]) + last_user.hashed
         hash = hashlib.md5(toHash.encode())
-        obj = Examiner_score(user = user, score = data["score"], hashed = hash)
+        obj = Examiner_score(user = user, score = data["score"], hashed = hash.hexdigest())
         obj.save()
-        return JsonResponse({"detail": "saved", "hash": str(hash)})
+        return JsonResponse({"detail": "saved", "hash": hash.hexdigest()})
     else:
         return JsonResponse({"detail" : "exam already taken."})
 
@@ -57,15 +62,18 @@ def get_user(request):
     except:
         return JsonResponse({"detail": "id invalid"})
 
-
+@api_view(['GET', 'POST'])
 def rank_examiners(request):
-    data = request.POST
-    print (request.body)
+    data = request.data
     ranked_objs = Examiner_score.objects.order_by("datetime_created")
     for  score_obj in ranked_objs:
-        if score_obj.user.exam_id == data["user_id"]:
+        if score_obj.user.exam_id == data["id"]:
             rank = get_rank(ranked_objs, score_obj)
-            return JsonResponse({"rank": rank, 'users': users,"name": score_obj.user.name})
+            serializer = ScoreSerializer(ranked_objs, many = True)
+            names = []
+            for ranked_obj in ranked_objs:
+                names.append(ranked_obj.user.name)
+            return JsonResponse({"detail": "ok","rank": rank, 'users': serializer.data,"name": score_obj.user.name, "score": score_obj.score, "names": names, "hash": score_obj.hashed})
     return JsonResponse({"detail": "invalid id"})
 
 
@@ -75,6 +83,11 @@ def get_rank(score_objs, this_obj):
         score_list.append(score.score)
     score_list = list(dict.fromkeys(score_list))
     score_list.sort()
+    print (score_list)
     for index, score in enumerate(score_list):
         if score == this_obj.score:
-            return index + 1
+            rank = index + 1
+            rank = rank - len(score_list)
+            if rank < 0:
+                rank *= -1
+            return rank

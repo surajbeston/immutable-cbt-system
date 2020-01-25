@@ -5,14 +5,26 @@
     <meta charset="utf-8">
 
     <title> Login Form</title>
-    <link rel="stylesheet" href="./style.css">
 
     <style>
         #body{
             display: none;
         }
 
+ 
+
     </style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 
 
@@ -20,7 +32,8 @@
     <h1 id = "head">Result Page: </h1>
 
     <div id = "body-form"> 
-        <label>User Id: </label><input type = "text" id="input_id"/>
+        <label>User Id: </label><input type = "text" id="input_id" />
+        <button onclick="App.get_result_and_verify(this)">Get Result</button>
     </div>
 
     <div id = "body">
@@ -30,18 +43,21 @@
         <h2>Rank: <span id = "rank"></span></h2>
         <h2>Hash: <span id = "hash"></span></h2>
         <div id = "other_results">
-            <div id = "paticular">
-                <h3>Name</h3>
-                <h3>Score</h3>
-                <h3>Hash</h3>
-            </div>
+            <ul class="list-group particular">
+                <li class="list-group-item active name_other">Cras justo odio</li>
+                <li class="list-group-item score_other">Dapibus ac facilisis in</li>
+                <li class="list-group-item hash_other">Morbi leo risus</li>
+              </ul>
         </div>
+
+        
+
+       
     </div>
 
     <script src="jquery.min.js"></script>
     <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
     <script src="app.js"></script>
-    <script type= "text/javascript">App.get_result_and_verify()</script>
 </body>
     
 </html>

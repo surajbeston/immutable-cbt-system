@@ -5,6 +5,7 @@ contract cbt{
 
     struct Test{
         uint sn;
+        string name;
         string id;
         uint test_datetime;
         uint test_score;
@@ -13,14 +14,13 @@ contract cbt{
     mapping(uint => Test) public tests;
 
     constructor() public {
-        createTest( "2347h2fj23467", 123);
+        createTest("suraj jha", "2347h2fj23467", 123);
     }
 
 
-    function createTest(string memory _id, uint _test_score) public{
+    function createTest(string memory _name, string memory _id, uint _test_score) public{
         user_count++;
         uint datetime_now = block.timestamp;
         tests[user_count] = Test(user_count, _name, _id, datetime_now, _test_score);
     }
-
 }
